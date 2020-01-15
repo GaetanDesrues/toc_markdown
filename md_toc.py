@@ -3,12 +3,12 @@ import sys
 def main():
     try: filename = sys.argv[1]
     except IndexError: raise FileNotFoundError("Please give a markdown filename")
+
     with open(filename, 'r') as f:
         lines = f.readlines()
     toc = Builder()
     for l in lines:
-        if l[0]=="#":
-            toc += l
+        if l[0]=="#": toc += l
     print(toc)
 
 
@@ -28,12 +28,12 @@ class Builder:
         return self
 
     def add(self, line, ind):
-        line = line[ind+1:]
-        markdown_code = line.lower().strip().replace(" ","-").replace("`","-").replace(":","-")
+        line = line[ind+1:].strip()
+        markdown_code = line.lower().replace(" ","-").replace("`","").replace(":","")
 
         self.str += " "*2*(ind-1)
         self.str += Builder.mark[ind-1]
-        self.str += " [{}](#{})\n".format(line.strip(), markdown_code)
+        self.str += " [{}](#{})\n".format(line, markdown_code)
 
 
 if __name__=="__main__": main()
